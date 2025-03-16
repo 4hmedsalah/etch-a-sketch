@@ -17,9 +17,31 @@
     <div class="window">
         <div class="app-container">
             <div class="app-border">
-                <div class="title">Etch-a-Sketch</div>
+                <div class="app-title">Etch-a-Sketch<sup style="font-size: 25px;">®</sup></div>
+                <div class="grid-shadow"></div>
+                <div class="grid-container"></div>
+                <div class="grid-settings">
+                    <div id="color-control" class="control-container" style="width:190px;">
+                        <div class="label">Colour</div>
+                        <div id="color-selector" class="control">Classic</div>
+                    </div>
+                    <div class="control-container" style="width:120px;">
+                        <div class="label">Mode</div>
+                        <div id="mode-selector" class="control">Draw</div>
+                    </div>
+                    <div class="control-container">
+                        <span class="grid-size-label label">Grid size: 50 x 100</span>
+                        <div class="slider-container control">
+                            <input id="grid-slider" type="range" class="slider" value="12" min="5" max="50">
+                        </div>
+                    </div>
+                    <div class="control-container">
+                        <div id="shake-button" class="control">Shake</div>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 </body>
 
 </html>
