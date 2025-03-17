@@ -46,6 +46,7 @@ body {
     color: #fdb86a;
     text-shadow: 0px 1px #0000002a;
     line-height: 80%;
+    margin-bottom: 30px;
 }
 
 sup {
@@ -59,16 +60,15 @@ sup {
     border-radius: 10px 10px 0 0;
 }
 
-.grid-container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 900px;
-    /* Fixed width */
-    height: 450px;
-    /* Fixed height */
-    border: 2px solid black;
-    margin: 20px auto;
+.canvas-container {
+    flex: 1;
+    height: 451px;
+    background-color: rgb(212, 212, 212);
+    display: grid;
+    border-bottom: 1px solid #0000003e;
+    border-right: 1px solid #0000003e;
 }
+
 
 .grid-settings {
     flex-flow: wrap;
@@ -98,7 +98,7 @@ sup {
 }
 
 .slider {
-    -webkit-appearance: none;
+    appearance: none;
     width: 150px;
     height: 10px;
     border-radius: 5px;
