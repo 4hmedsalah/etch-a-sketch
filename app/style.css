@@ -32,22 +32,18 @@ body {
 }
 
 .app-border {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     background-color: #e85432;
-    padding: 30px 50px;
+    padding: 50px 50px;
+    padding-left: 20px;
     border-radius: 24px;
     border-bottom: 10px solid #0000002a;
 }
 
-.app-title {
-    border-radius: 16px;
-    text-align: center;
-    font-family: 'Mrs Sheppards';
-    font-size: 50px;
-    color: #fdb86a;
-    text-shadow: 0px 1px #0000002a;
-    line-height: 80%;
-    margin-bottom: 30px;
-}
+
 
 sup {
     vertical-align: super;
@@ -63,27 +59,51 @@ sup {
 .canvas-container {
     flex: 1;
     height: 451px;
+    width: 1200px;
     background-color: rgb(212, 212, 212);
     display: grid;
     border-bottom: 1px solid #0000003e;
     border-right: 1px solid #0000003e;
+    margin-left: 20px;
 }
 
-
-.grid-settings {
-    flex-flow: wrap;
-    align-items: center;
+.title-controls {
+    width: 170px;
+    flex-direction: column;
+    align-items: flex-start;
     color: #fdb86a;
     display: flex;
     font-size: 18px;
-    gap: 20px;
     justify-content: space-between;
 }
+
+.app-title {
+    line-height: 80%;
+    width: 170px;
+    text-align: center;
+    border-radius: 16px;
+    font-family: 'Mrs Sheppards';
+    font-size: 55px;
+    color: #fdb86a;
+    text-shadow: 0px 1px #0000002a;
+    margin-bottom: 80px;
+}
+
+
 
 .control-container {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.grid-size-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Keeps label and slider aligned */
+    gap: 5px;
+    /* Adjusts spacing between label and slider */
 }
 
 .control {
