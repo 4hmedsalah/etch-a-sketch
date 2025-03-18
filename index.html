@@ -17,7 +17,7 @@
     <div class="window">
         <div class="app-container">
             <div class="app-border">
-                <div class="title-controls">
+                <div class="control-panel">
                     <div class="app-title">Etch<br>a<br>Sketch<sup style="font-size: 25px;">®</sup>
                     </div>
                     <div id="color-control" class="control-container">
@@ -35,14 +35,13 @@
                     <div class="control-container grid-size-container">
                         <span class="grid-size-label label">Grid size: 12 x 24</span>
                         <div class="slider-container control">
-                            <input id="grid-slider" type="range" class="slider" value="12" min="5" max="50">
+                            <input id="grid-slider" type="range" class="slider">
                         </div>
                     </div>
                 </div>
-                <div class="canvas-shadow"></div>
-                <div class="canvas-container"
-                    style="grid-template-columns: repeat(100, 1fr); grid-template-rows: repeat(50, 1fr);">
-
+                <div>
+                    <div class="canvas-shadow"></div>
+                    <div class="canvas-container"></div>
                 </div>
             </div>
         </div>
