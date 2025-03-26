@@ -6,6 +6,12 @@ const gridSizeLabel = document.querySelector(".grid-size-label");
 const gridRatio = 2;
 let currentSize = 12;
 
+let mouseDown = false;
+window.onmousedown = () => mouseDown = true;
+window.onmouseup = () => mouseDown = false;
+
+let drawMode = "Draw";
+
 function changeGridSize(gridSize) {
     setupNewCanvas(gridSize);
     addSquares(gridSize);
@@ -45,6 +51,23 @@ function addSquares(gridSize) {
         const gridSquare = document.createElement("div");
         gridSquare.classList.add("grid-square");
         gridSquare.id = `Sq${i}`;
+        gridSquare.addEventListener('mousedown', setBg);
+        gridSquare.addEventListener('mouseover', mousetrail);
         canvasContainer.appendChild(gridSquare);
     };
 };
+
+function mousetrail(e) {
+    if (mouseDown) {
+        setBg(e);
+    }
+    e.target.classList.add('hover');
+    e.target.addEventListener('transitionend', () => e.target.classList.remove('hover'));
+};
+
+//Change the background colour of the squares
+function setBg(e) {
+    if (drawMode === "Draw") {
+        e.target.style.backgroundColor = "rgb(60, 60, 60)"; // Default color
+    }
+}

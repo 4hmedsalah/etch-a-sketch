@@ -132,6 +132,14 @@ span {
     transition: all 0.2s ease;
 }
 
+.grid-square.hover {
+    background-color: #BDBDBD
+}
+
+.grid-square.draw {
+    background-color: #565656;
+}
+
 .slider {
     appearance: none;
     width: 150px;
