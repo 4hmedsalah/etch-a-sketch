@@ -1,6 +1,8 @@
 const canvasContainer = document.querySelector(".canvas-container");
 const slider = document.querySelector("#grid-slider");
 const gridSizeLabel = document.querySelector(".grid-size-label");
+const modeSelector = document.querySelector('#mode-selector');
+
 
 // Ratio of 1 : grid Ratio
 const gridRatio = 2;
@@ -11,6 +13,17 @@ window.onmousedown = () => mouseDown = true;
 window.onmouseup = () => mouseDown = false;
 
 let drawMode = "Draw";
+modeSelector.textContent = drawMode;
+modeSelector.addEventListener('click', setMode);
+
+function setMode() {
+    if (drawMode === "Draw") {
+        drawMode = "Erase";
+    } else {
+        drawMode = "Draw";
+    };
+    modeSelector.textContent = drawMode;
+};
 
 function changeGridSize(gridSize) {
     setupNewCanvas(gridSize);
@@ -57,6 +70,7 @@ function addSquares(gridSize) {
     };
 };
 
+// Add hover effect
 function mousetrail(e) {
     if (mouseDown) {
         setBg(e);
@@ -65,9 +79,11 @@ function mousetrail(e) {
     e.target.addEventListener('transitionend', () => e.target.classList.remove('hover'));
 };
 
-//Change the background colour of the squares
+// Change the background colour of the squares
 function setBg(e) {
     if (drawMode === "Draw") {
         e.target.style.backgroundColor = "rgb(60, 60, 60)"; // Default color
+    } else {
+        e.target.style.backgroundColor = ""; // Erase the backbround colour
     }
-}
+};
