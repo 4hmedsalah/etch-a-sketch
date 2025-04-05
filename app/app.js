@@ -8,7 +8,7 @@ const btnSound = new Audio("click-sound.wav");
 
 // Ratio of 1 : grid Ratio
 const gridRatio = 2;
-let currentSize = 12;
+let currentSize = 15;
 
 let mouseDown = false;
 window.onmousedown = () => mouseDown = true;
@@ -90,11 +90,11 @@ function mousetrail(e) {
     e.target.addEventListener('transitionend', () => e.target.classList.remove('hover'));
 };
 
-// Change the background colour of the squares
+// Change the background color of the squares
 function setBg(e) {
     if (drawMode === "Draw") {
         e.target.style.backgroundColor = "rgb(60, 60, 60)"; // Default color
     } else {
-        e.target.style.backgroundColor = ""; // Erase the backbround colour
+        e.target.style.backgroundColor = ""; // Erase the background color
     }
 };
