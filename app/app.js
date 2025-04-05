@@ -2,6 +2,8 @@ const canvasContainer = document.querySelector(".canvas-container");
 const slider = document.querySelector("#grid-slider");
 const gridSizeLabel = document.querySelector(".grid-size-label");
 const modeSelector = document.querySelector('#mode-selector');
+const buttons = document.querySelectorAll(".control");
+const btnSound = new Audio("click-sound.wav");
 
 
 // Ratio of 1 : grid Ratio
@@ -57,6 +59,15 @@ slider.oninput = function () {
     currentSize = this.value;
     changeGridSize(this.value);
 };
+
+// Add button click sound
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        btnSound.currentTime = 0;
+        btnSound.volume = 0.5; // Sets the volume to 50%
+        btnSound.play();
+    });
+});
 
 // Add the correct amount of divs to the grid
 function addSquares(gridSize) {
