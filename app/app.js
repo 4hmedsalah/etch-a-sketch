@@ -3,7 +3,7 @@ const slider = document.querySelector("#grid-slider");
 const gridSizeLabel = document.querySelector(".grid-size-label");
 const modeSelector = document.querySelector('#mode-selector');
 const buttons = document.querySelectorAll(".control");
-const btnSound = new Audio("click-sound.wav");
+const btnSound = new Audio("assets/sounds/click-sound.wav");
 
 
 // Ratio of 1 : grid Ratio
