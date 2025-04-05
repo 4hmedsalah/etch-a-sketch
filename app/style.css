@@ -116,6 +116,11 @@ span {
     justify-content: center;
 }
 
+.control:active:not(.slider-container) {
+    background-color: #e29b4b;
+    transition: background-color 0.05s ease-in-out;
+}
+
 .grid-size-container {
     display: flex;
     flex-direction: column;

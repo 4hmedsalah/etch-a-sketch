@@ -64,7 +64,7 @@ slider.oninput = function () {
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
         btnSound.currentTime = 0;
-        btnSound.volume = 0.5; // Sets the volume to 50%
+        btnSound.volume = 0.3; // Sets the volume to 30%
         btnSound.play();
     });
 });
