@@ -1,8 +1,10 @@
 const canvasContainer = document.querySelector(".canvas-container");
 const slider = document.querySelector("#grid-slider");
 const gridSizeLabel = document.querySelector(".grid-size-label");
-const modeSelector = document.querySelector('#mode-selector');
+const modeSelector = document.querySelector("#mode-selector");
 const buttons = document.querySelectorAll(".control");
+const appContainer = document.querySelector(".app-container");
+const shakeButton = document.querySelector("#shake-button");
 const btnSound = new Audio("assets/sounds/click-sound.wav");
 
 
@@ -16,7 +18,7 @@ window.onmouseup = () => mouseDown = false;
 
 let drawMode = "Draw";
 modeSelector.textContent = drawMode;
-modeSelector.addEventListener('click', setMode);
+modeSelector.addEventListener("click", setMode);
 
 function setMode() {
     if (drawMode === "Draw") {
@@ -75,10 +77,21 @@ function addSquares(gridSize) {
         const gridSquare = document.createElement("div");
         gridSquare.classList.add("grid-square");
         gridSquare.id = `Sq${i}`;
-        gridSquare.addEventListener('mousedown', setBg);
-        gridSquare.addEventListener('mouseover', mousetrail);
+        gridSquare.addEventListener("mousedown", setBg);
+        gridSquare.addEventListener("mouseover", mousetrail);
         canvasContainer.appendChild(gridSquare);
     };
+};
+
+shakeButton.addEventListener("click", shakeCanvas);
+
+// Adds a shake animation to the canvas and clears the grid squares
+function shakeCanvas() {
+    const squares = document.querySelectorAll(".grid-square");
+    squares.forEach(square => square.style.backgroundColor = "");
+    appContainer.classList.add("canvas-shake");
+    // Remove the "canvas-shake" class after the animation ends to allow it to be reused
+    appContainer.addEventListener("animationend", () => appContainer.classList.remove("canvas-shake"));
 };
 
 // Add hover effect
@@ -86,8 +99,8 @@ function mousetrail(e) {
     if (mouseDown) {
         setBg(e);
     }
-    e.target.classList.add('hover');
-    e.target.addEventListener('transitionend', () => e.target.classList.remove('hover'));
+    e.target.classList.add("hover");
+    e.target.addEventListener("transitionend", () => e.target.classList.remove("hover"));
 };
 
 // Change the background color of the squares

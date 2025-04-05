@@ -145,6 +145,49 @@ span {
     background-color: #565656;
 }
 
+.canvas-shake {
+    animation-name: shake;
+    animation-duration: 0.5s;
+    /* Slower animation */
+}
+
+@keyframes shake {
+    0% {
+        transform: rotate(0deg);
+        position: relative;
+        top: 0px;
+    }
+
+    25% {
+        transform: rotate(-2deg);
+        /* Reduced rotation */
+        position: relative;
+        top: -20px;
+        /* Reduced jump */
+    }
+
+    50% {
+        transform: rotate(2deg);
+        /* Reduced rotation */
+        position: relative;
+        top: 0px;
+    }
+
+    75% {
+        transform: rotate(-2deg);
+        /* Reduced rotation */
+        position: relative;
+        top: -20px;
+        /* Reduced jump */
+    }
+
+    100% {
+        transform: rotate(0deg);
+        position: relative;
+        top: 0px;
+    }
+}
+
 .slider {
     appearance: none;
     width: 150px;
