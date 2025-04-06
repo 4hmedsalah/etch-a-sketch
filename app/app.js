@@ -67,10 +67,15 @@ function setupNewCanvas(gridSize) {
     canvasContainer.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
 }
 
-// Update the current slider value (each time you drag the slider handle)
+// Update the grid size label as the slider is dragged
 slider.oninput = function () {
     gridSizeLabel.textContent = `Grid size: ${this.value} x ${this.value * gridRatio}`;
     currentSize = this.value;
+};
+
+// Reset the grid only when the user releases the slider handle
+slider.onchange = function () {
+    // Update the grid size
     changeGridSize(this.value);
 };
 
