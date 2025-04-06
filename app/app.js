@@ -8,6 +8,8 @@ const appContainer = document.querySelector(".app-container");
 const shakeButton = document.querySelector("#shake-button");
 const btnSound = new Audio("assets/sounds/click-sound.wav");
 
+const DARKEST_GREY = "rgb(60, 60, 60)";
+const LIGHTEST_GREY = "rgb(180, 180, 180)";
 
 // Ratio of 1 : grid Ratio
 const gridRatio = 2;
@@ -85,26 +87,32 @@ buttons.forEach((button) => {
 
 // Add the correct amount of divs to the grid
 function addSquares(gridSize) {
+    const fragment = document.createDocumentFragment();
     for (let i = 1; i <= gridSize * (gridSize * gridRatio); i++) {
         const gridSquare = document.createElement("div");
         gridSquare.classList.add("grid-square");
         gridSquare.id = `Sq${i}`;
         gridSquare.addEventListener("mousedown", setBg);
         gridSquare.addEventListener("mouseover", mousetrail);
-        canvasContainer.appendChild(gridSquare);
-    };
-};
+        fragment.appendChild(gridSquare);
+    }
+    canvasContainer.appendChild(fragment);
+}
 
 shakeButton.addEventListener("click", shakeCanvas);
+
+function handleAnimationEnd() {
+    appContainer.classList.remove("canvas-shake");
+    appContainer.removeEventListener("animationend", handleAnimationEnd);
+}
 
 // Adds a shake animation to the canvas and clears the grid squares
 function shakeCanvas() {
     const squares = document.querySelectorAll(".grid-square");
     squares.forEach(square => square.style.backgroundColor = "");
     appContainer.classList.add("canvas-shake");
-    // Remove the "canvas-shake" class after the animation ends to allow it to be reused
-    appContainer.addEventListener("animationend", () => appContainer.classList.remove("canvas-shake"));
-};
+    appContainer.addEventListener("animationend", handleAnimationEnd);
+}
 
 // Add hover effect
 function mousetrail(e) {
@@ -120,7 +128,7 @@ function setBg(e) {
     if (drawMode === "Draw") {
         switch (colorChoice) {
             case "Default":
-                e.target.style.backgroundColor = "rgb(60, 60, 60)"; // Default color
+                e.target.style.backgroundColor = DARKEST_GREY; // Default color
                 break;
             case "Tint":
                 tintBg(e);
@@ -147,7 +155,7 @@ function colorSwatches(e) {
 function tintBg(e) {
     //If there's no bg color on the square, set it to the lightest tint
     if (e.target.style.backgroundColor === "") {
-        e.target.style.backgroundColor = "rgb(180, 180, 180)";
+        e.target.style.backgroundColor = LIGHTEST_GREY;
 
         //Otherwise, get the RGB value of the current bg color and map it to an array
     } else {
@@ -155,7 +163,7 @@ function tintBg(e) {
         const currentArray = currentColor.match(/\d+/g).map(Number);
 
         //If the color is already the darkest grey, stop tinting
-        if (currentColor === "rgb(60, 60, 60)") {
+        if (currentColor === DARKEST_GREY) {
             return;
 
             //Otherwise, if the color is grey, make it darker
@@ -165,7 +173,7 @@ function tintBg(e) {
 
             //If it's a color other than grey, also set it to the lightest tint
         } else {
-            e.target.style.backgroundColor = "rgb(180, 180, 180)";
+            e.target.style.backgroundColor = LIGHTEST_GREY;
         };
     };
 };
