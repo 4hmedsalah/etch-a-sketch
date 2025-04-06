@@ -2,6 +2,7 @@ const canvasContainer = document.querySelector(".canvas-container");
 const slider = document.querySelector("#grid-slider");
 const gridSizeLabel = document.querySelector(".grid-size-label");
 const modeSelector = document.querySelector("#mode-selector");
+const colorSelector = document.querySelector('#color-selector');
 const buttons = document.querySelectorAll(".control");
 const appContainer = document.querySelector(".app-container");
 const shakeButton = document.querySelector("#shake-button");
@@ -15,6 +16,19 @@ let currentSize = 15;
 let mouseDown = false;
 window.onmousedown = () => mouseDown = true;
 window.onmouseup = () => mouseDown = false;
+
+let colorChoice = "Default";
+colorSelector.textContent = colorChoice;
+colorSelector.addEventListener('click', setColor);
+
+function setColor() {
+    const colorModes = ["Default", "Tint", "70s"];
+    let currentIndex = colorModes.indexOf(colorChoice);
+    let nextIndex = (currentIndex + 1) % colorModes.length;
+
+    colorChoice = colorModes[nextIndex];
+    colorSelector.textContent = colorChoice;
+}
 
 let drawMode = "Draw";
 modeSelector.textContent = drawMode;
@@ -46,11 +60,9 @@ function defaultCanvas(size, min, max) {
 // Input default canvas settings
 defaultCanvas(currentSize, 10, 50);//starting rows, min rows , max rows
 
-// Clear the canvas and then add CSS grid properties to the canvas element
+// Clear the canvas and set up the grid layout
 function setupNewCanvas(gridSize) {
-    while (canvasContainer.firstChild) {
-        canvasContainer.removeChild(canvasContainer.firstChild);
-    }
+    canvasContainer.innerHTML = ""; // Remove all existing grid squares
     canvasContainer.style.gridTemplateColumns = `repeat(${gridSize * gridRatio}, 1fr)`;
     canvasContainer.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
 };
@@ -106,8 +118,54 @@ function mousetrail(e) {
 // Change the background color of the squares
 function setBg(e) {
     if (drawMode === "Draw") {
-        e.target.style.backgroundColor = "rgb(60, 60, 60)"; // Default color
+        switch (colorChoice) {
+            case "Default":
+                e.target.style.backgroundColor = "rgb(60, 60, 60)"; // Default color
+                break;
+            case "Tint":
+                tintBg(e);
+                break;
+            case "70s":
+                colorSwatches(e);
+                break;
+        };
     } else {
         e.target.style.backgroundColor = ""; // Erase the background color
     }
+};
+
+let colorSelection = 0;
+
+function colorSwatches(e) {
+    const colors = ["#3F8A8C", "#0C5679", "#0B0835", "#E5340B", "#F28A0F", "#FFE7BD"];
+    if (colorSelection > colors.length - 1) { colorSelection = 0; };
+    e.target.style.backgroundColor = colors[colorSelection];
+    colorSelection++;
+}
+
+//This function is used for the 'Tint' draw mode
+function tintBg(e) {
+    //If there's no bg color on the square, set it to the lightest tint
+    if (e.target.style.backgroundColor === "") {
+        e.target.style.backgroundColor = "rgb(180, 180, 180)";
+
+        //Otherwise, get the RGB value of the current bg color and map it to an array
+    } else {
+        const currentColor = e.target.style.backgroundColor;
+        const currentArray = currentColor.match(/\d+/g).map(Number);
+
+        //If the color is already the darkest grey, stop tinting
+        if (currentColor === "rgb(60, 60, 60)") {
+            return;
+
+            //Otherwise, if the color is grey, make it darker
+        } else if (currentArray[0] === currentArray[1] && currentArray[0] === currentArray[2]) {
+            const newValue = currentArray[0] - 40;
+            e.target.style.backgroundColor = `rgb(${newValue}, ${newValue}, ${newValue})`;
+
+            //If it's a color other than grey, also set it to the lightest tint
+        } else {
+            e.target.style.backgroundColor = "rgb(180, 180, 180)";
+        };
+    };
 };
