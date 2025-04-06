@@ -23,6 +23,7 @@ let colorChoice = "Default";
 colorSelector.textContent = colorChoice;
 colorSelector.addEventListener('click', setColor);
 
+// Cycle through color modes (Default, Tint, 70s)
 function setColor() {
     const colorModes = ["Default", "Tint", "70s"];
     let currentIndex = colorModes.indexOf(colorChoice);
@@ -36,28 +37,25 @@ let drawMode = "Draw";
 modeSelector.textContent = drawMode;
 modeSelector.addEventListener("click", setMode);
 
+// Cycle through draw and erase modes
 function setMode() {
-    if (drawMode === "Draw") {
-        drawMode = "Erase";
-    } else {
-        drawMode = "Draw";
-    };
+    drawMode = drawMode === "Draw" ? "Erase" : "Draw";
     modeSelector.textContent = drawMode;
-};
+}
 
 function changeGridSize(gridSize) {
     setupNewCanvas(gridSize);
     addSquares(gridSize);
-};
+}
 
-// Setup default canvas
+// Initialize the default canvas with size, min, and max grid values
 function defaultCanvas(size, min, max) {
     changeGridSize(size);
     slider.setAttribute("value", size);
     slider.setAttribute("min", min);
     slider.setAttribute("max", max);
     gridSizeLabel.textContent = `Grid size: ${size} x ${size * gridRatio}`;
-};
+}
 
 // Input default canvas settings
 defaultCanvas(currentSize, 10, 50);//starting rows, min rows , max rows
@@ -67,7 +65,7 @@ function setupNewCanvas(gridSize) {
     canvasContainer.innerHTML = ""; // Remove all existing grid squares
     canvasContainer.style.gridTemplateColumns = `repeat(${gridSize * gridRatio}, 1fr)`;
     canvasContainer.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
-};
+}
 
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function () {
@@ -85,7 +83,7 @@ buttons.forEach((button) => {
     });
 });
 
-// Add the correct amount of divs to the grid
+// Dynamically add grid squares to the canvas
 function addSquares(gridSize) {
     const fragment = document.createDocumentFragment();
     for (let i = 1; i <= gridSize * (gridSize * gridRatio); i++) {
@@ -101,29 +99,30 @@ function addSquares(gridSize) {
 
 shakeButton.addEventListener("click", shakeCanvas);
 
+// Adds a shake animation to the canvas and clears the grid squares
+function shakeCanvas() {
+    const squares = document.querySelectorAll(".grid-square");
+    squares.forEach((square) => (square.style.backgroundColor = "")); // Clear all squares
+    appContainer.classList.add("canvas-shake");
+    appContainer.addEventListener("animationend", handleAnimationEnd);
+}
+
+// Handles the end of the shake animation by removing the animation class
 function handleAnimationEnd() {
     appContainer.classList.remove("canvas-shake");
     appContainer.removeEventListener("animationend", handleAnimationEnd);
 }
 
-// Adds a shake animation to the canvas and clears the grid squares
-function shakeCanvas() {
-    const squares = document.querySelectorAll(".grid-square");
-    squares.forEach(square => square.style.backgroundColor = "");
-    appContainer.classList.add("canvas-shake");
-    appContainer.addEventListener("animationend", handleAnimationEnd);
-}
-
-// Add hover effect
+// Add hover effect to grid squares
 function mousetrail(e) {
     if (mouseDown) {
-        setBg(e);
+        setBg(e); // Change background color if mouse is down
     }
-    e.target.classList.add("hover");
+    e.target.classList.add("hover"); // Add hover effect
     e.target.addEventListener("transitionend", () => e.target.classList.remove("hover"));
-};
+}
 
-// Change the background color of the squares
+// Change the background color of the squares based on the selected mode
 function setBg(e) {
     if (drawMode === "Draw") {
         switch (colorChoice) {
@@ -140,40 +139,35 @@ function setBg(e) {
     } else {
         e.target.style.backgroundColor = ""; // Erase the background color
     }
-};
+}
 
 let colorSelection = 0;
 
+// Cycle through a predefined set of colors for the "70s" mode
 function colorSwatches(e) {
     const colors = ["#3F8A8C", "#0C5679", "#0B0835", "#E5340B", "#F28A0F", "#FFE7BD"];
-    if (colorSelection > colors.length - 1) { colorSelection = 0; };
+    if (colorSelection > colors.length - 1) {
+        colorSelection = 0;
+    }
     e.target.style.backgroundColor = colors[colorSelection];
     colorSelection++;
 }
 
-//This function is used for the 'Tint' draw mode
+// Tint the background color of a square by darkening or resetting it
 function tintBg(e) {
-    //If there's no bg color on the square, set it to the lightest tint
     if (e.target.style.backgroundColor === "") {
-        e.target.style.backgroundColor = LIGHTEST_GREY;
-
-        //Otherwise, get the RGB value of the current bg color and map it to an array
+        e.target.style.backgroundColor = LIGHTEST_GREY; // Set to lightest tint if no color
     } else {
         const currentColor = e.target.style.backgroundColor;
         const currentArray = currentColor.match(/\d+/g).map(Number);
 
-        //If the color is already the darkest grey, stop tinting
         if (currentColor === DARKEST_GREY) {
-            return;
-
-            //Otherwise, if the color is grey, make it darker
+            return; // Stop if already the darkest grey
         } else if (currentArray[0] === currentArray[1] && currentArray[0] === currentArray[2]) {
-            const newValue = currentArray[0] - 40;
+            const newValue = currentArray[0] - 40; // Darken the grey
             e.target.style.backgroundColor = `rgb(${newValue}, ${newValue}, ${newValue})`;
-
-            //If it's a color other than grey, also set it to the lightest tint
         } else {
-            e.target.style.backgroundColor = LIGHTEST_GREY;
-        };
-    };
-};
+            e.target.style.backgroundColor = LIGHTEST_GREY; // Reset to lightest tint if not grey
+        }
+    }
+}
