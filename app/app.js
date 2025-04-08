@@ -3,6 +3,7 @@ const slider = document.querySelector("#grid-slider");
 const gridSizeLabel = document.querySelector(".grid-size-label");
 const modeSelector = document.querySelector("#mode-selector");
 const colorSelector = document.querySelector('#color-selector');
+const colorPicker = document.querySelector('#color-picker');
 const buttons = document.querySelectorAll(".control");
 const appContainer = document.querySelector(".app-container");
 const shakeButton = document.querySelector("#shake-button");
@@ -23,15 +24,29 @@ let colorChoice = "Default";
 colorSelector.textContent = colorChoice;
 colorSelector.addEventListener('click', setColor);
 
-// Cycle through color modes (Default, Tint, 70s)
+let pickedColor = "#000000"; // Default color for the color picker
+
+// Switch between color modes
 function setColor() {
-    const colorModes = ["Default", "Tint", "70s"];
+    const colorModes = ["Default", "Tint", "70s", "Picker"];
     let currentIndex = colorModes.indexOf(colorChoice);
     let nextIndex = (currentIndex + 1) % colorModes.length;
 
     colorChoice = colorModes[nextIndex];
     colorSelector.textContent = colorChoice;
+
+    // Show/hide color picker based on mode
+    if (colorChoice === "Picker") {
+        colorPicker.classList.add('visible');
+    } else {
+        colorPicker.classList.remove('visible');
+    }
 }
+
+// Add color picker change handler
+colorPicker.addEventListener('input', (e) => {
+    pickedColor = e.target.value;
+});
 
 let drawMode = "Draw";
 modeSelector.textContent = drawMode;
@@ -139,6 +154,9 @@ function setBg(e) {
                 break;
             case "70s":
                 colorSwatches(e);
+                break;
+            case "Picker":
+                e.target.style.backgroundColor = pickedColor;
                 break;
         };
     } else {
