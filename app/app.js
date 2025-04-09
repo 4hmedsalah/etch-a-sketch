@@ -9,16 +9,35 @@ const appContainer = document.querySelector(".app-container");
 const shakeButton = document.querySelector("#shake-button");
 const btnSound = new Audio("assets/sounds/click-sound.wav");
 
+const undoButton = document.querySelector("#undo-button");
+const redoButton = document.querySelector("#redo-button");
+
 const DARKEST_GREY = "rgb(60, 60, 60)";
 const LIGHTEST_GREY = "rgb(180, 180, 180)";
+
+// Disable History buttons on page load
+window.addEventListener('load', () => {
+    undoButton.classList.add('disabled');
+    redoButton.classList.add('disabled');
+});
 
 // Ratio of 1 : grid Ratio
 const gridRatio = 2;
 let currentSize = 15;
 
 let mouseDown = false;
-window.onmousedown = () => mouseDown = true;
-window.onmouseup = () => mouseDown = false;
+canvasContainer.onmousedown = () => mouseDown = true;
+canvasContainer.onmouseup = () => {
+    mouseDown = false;
+    if (currentDrawing.length > 0) {
+        undoStack.push([...currentDrawing]); // Create a copy of currentDrawing
+        currentDrawing = [];
+
+        // Clear redo stack when new drawing is made
+        redoStack = [];
+        updateHistoryButtons();
+    }
+};
 
 let colorChoice = "Default";
 colorSelector.textContent = colorChoice;
@@ -92,6 +111,10 @@ slider.oninput = function () {
 slider.onchange = function () {
     // Update the grid size
     changeGridSize(this.value);
+
+    undoStack = [];
+    redoStack = [];
+    updateHistoryButtons();
 };
 
 // Add button click sound
@@ -123,6 +146,10 @@ shakeButton.addEventListener("click", shakeCanvas);
 function shakeCanvas() {
     const squares = document.querySelectorAll(".grid-square");
     squares.forEach((square) => (square.style.backgroundColor = "")); // Clear all squares
+    undoStack = [];
+    redoStack = [];
+    updateHistoryButtons();
+
     appContainer.classList.add("canvas-shake");
     appContainer.addEventListener("animationend", handleAnimationEnd);
 }
@@ -142,12 +169,27 @@ function mousetrail(e) {
     e.target.addEventListener("transitionend", () => e.target.classList.remove("hover"));
 }
 
+// Add state management for undo/redo
+let undoStack = [];
+let redoStack = [];
+const maxStackSize = 50; // Limit stack size to prevent memory issues
+let currentDrawing = []; // Track squares modified in current drawing action
+
 // Change the background color of the squares based on the selected mode
 function setBg(e) {
     if (drawMode === "Draw") {
+        const square = e.target;
+
+        // Check if this square is already in the current drawing
+        const isDuplicate = currentDrawing.some(change => change.element === square);
+        if (isDuplicate) return; // Skip if square is already in current drawing
+
+        const originalColor = square.style.backgroundColor;
+
+        // Apply new color
         switch (colorChoice) {
             case "Default":
-                e.target.style.backgroundColor = DARKEST_GREY; // Default color
+                square.style.backgroundColor = DARKEST_GREY;
                 break;
             case "Tint":
                 tintBg(e);
@@ -156,11 +198,32 @@ function setBg(e) {
                 colorSwatches(e);
                 break;
             case "Picker":
-                e.target.style.backgroundColor = pickedColor;
+                square.style.backgroundColor = pickedColor;
                 break;
-        };
+        }
+
+        // Add to current drawing array only if it's not a duplicate
+        currentDrawing.push({
+            element: square,
+            initialColor: originalColor,
+            newColor: square.style.backgroundColor
+        });
     } else {
-        e.target.style.backgroundColor = ""; // Erase the background color
+        const square = e.target;
+
+        // Only register erase if square has a color
+        if (square.style.backgroundColor !== "") {
+            // Check for duplicates in erase mode too
+            const isDuplicate = currentDrawing.some(change => change.element === square);
+            if (isDuplicate) return;
+
+            currentDrawing.push({
+                element: square,
+                initialColor: square.style.backgroundColor,
+                newColor: ""
+            });
+            square.style.backgroundColor = "";
+        }
     }
 }
 
@@ -194,3 +257,62 @@ function tintBg(e) {
         }
     }
 }
+
+// Add undo/redo functions
+function undo() {
+    if (undoStack.length > 0) {
+        const lastDrawing = undoStack.pop();
+        redoStack.push(lastDrawing);
+
+        lastDrawing.forEach(change => {
+            change.element.style.backgroundColor = change.initialColor;
+        });
+
+        updateHistoryButtons();
+    }
+}
+
+function redo() {
+    if (redoStack.length > 0) {
+        const drawingToRedo = redoStack.pop();
+        undoStack.push(drawingToRedo);
+
+        drawingToRedo.forEach(change => {
+            change.element.style.backgroundColor = change.newColor;
+        });
+
+        updateHistoryButtons();
+    }
+}
+
+function updateHistoryButtons() {
+    undoButton.classList.toggle('disabled', undoStack.length === 0);
+    redoButton.classList.toggle('disabled', redoStack.length === 0);
+}
+
+undoButton.addEventListener('click', () => {
+    if (undoStack.length > 0) {
+        undo();
+    }
+});
+
+redoButton.addEventListener('click', () => {
+    if (redoStack.length > 0) {
+        redo();
+    }
+});
+
+// Add keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    // For undo: Ctrl+Z
+    // For redo: Ctrl+Shift+Z
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+        e.preventDefault();  // Prevent browser's default undo/redo
+
+        if (e.shiftKey && redoStack.length > 0) {
+            redo();
+        } else if (!e.shiftKey && undoStack.length > 0) {
+            undo();
+        }
+    }
+});

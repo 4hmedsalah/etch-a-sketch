@@ -118,7 +118,6 @@ span {
 
 .control:active:not(.slider-container) {
     background-color: #e29b4b;
-    transition: background-color 0.05s ease-in-out;
 }
 
 .grid-size-container {
@@ -279,4 +278,22 @@ span {
 
 #color-picker.visible {
     opacity: 1;
+}
+
+.history-controls {
+    display: flex;
+    gap: 5px;
+    width: 80px;
+}
+
+.history-controls .control {
+    width: 37.5px;
+    min-width: unset;
+    font-size: 20px;
+}
+
+#undo-button.disabled,
+#redo-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
