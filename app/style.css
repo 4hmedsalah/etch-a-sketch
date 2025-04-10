@@ -236,28 +236,29 @@ span {
     /* Subtle shadow for depth */
 }
 
-.label {
+.color-wrapper {
     position: relative;
-    /* Positioning context for the picker */
 }
 
 #color-selector {
     position: relative;
-    /* Positioning context for the picker */
+    z-index: 2;
 }
 
 #color-picker {
     position: absolute;
     bottom: 20%;
-    left: 205.5%;
+    left: 50%;
     transform: translateX(-50%);
     opacity: 0;
+    visibility: hidden;
     transition: all 0.2s ease;
     width: 80px;
     height: 35px;
     border-radius: 4px;
     cursor: pointer;
     border: none;
+    z-index: 1;
 }
 
 #color-picker:hover {
@@ -278,6 +279,7 @@ span {
 
 #color-picker.visible {
     opacity: 1;
+    visibility: visible;
 }
 
 .history-controls {
