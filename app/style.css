@@ -21,14 +21,13 @@ body {
 .app-container {
     user-select: none;
     -webkit-user-select: none;
-    /*Safari*/
     -moz-user-select: none;
-    /*Firefox*/
     align-items: center;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 1160px;
+    /* Maximum width of the app container */
     position: relative;
 }
 
@@ -109,15 +108,14 @@ span {
 .control:active:not(.slider-container):not(.disabled) {
     background-color: #e29b4b;
     transform: translateY(2px);
+    /* Creates a "press down" animation */
 }
 
 .grid-size-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* Keeps label and slider aligned */
     gap: 5px;
-    /* Adjusts spacing between label and slider */
     margin-bottom: 0px;
     width: 100%;
 }
@@ -139,7 +137,6 @@ span {
 .canvas-shake {
     animation-name: shake;
     animation-duration: 0.5s;
-    /* Slower animation */
 }
 
 @keyframes shake {
@@ -147,29 +144,25 @@ span {
         transform: rotate(0deg);
         position: relative;
         top: 0px;
+        /* Initial state: no rotation, no vertical offset */
     }
 
     25% {
         transform: rotate(-2deg);
-        /* Reduced rotation */
         position: relative;
         top: -20px;
-        /* Reduced jump */
     }
 
     50% {
         transform: rotate(2deg);
-        /* Reduced rotation */
         position: relative;
         top: 0px;
     }
 
     75% {
         transform: rotate(-2deg);
-        /* Reduced rotation */
         position: relative;
         top: -20px;
-        /* Reduced jump */
     }
 
     100% {
