@@ -15,11 +15,8 @@ const redoButton = document.querySelector("#redo-button");
 const DARKEST_GREY = "rgb(60, 60, 60)";
 const LIGHTEST_GREY = "rgb(180, 180, 180)";
 
-// Disable History buttons on page load
-window.addEventListener('load', () => {
-    undoButton.classList.add('disabled');
-    redoButton.classList.add('disabled');
-});
+undoButton.classList.add('disabled');
+redoButton.classList.add('disabled');
 
 // Ratio of 1 : grid Ratio
 const gridRatio = 2;
