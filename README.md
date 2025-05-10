@@ -10,7 +10,7 @@ A modern web-based drawing application inspired by the classic Etch-A-Sketch toy
 
 ## Demo
 
-[Live Preview](https://ahmedcodespace.github.io/etch-a-sketch/)
+[Live Preview](https://4hmedsalah.github.io/etch-a-sketch/)
 
 ## Features
 
@@ -68,7 +68,7 @@ A modern web-based drawing application inspired by the classic Etch-A-Sketch toy
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/AhmedCodespace/etch-a-sketch.git
+   git clone https://github.com/4hmedsalah/etch-a-sketch.git
    ```
 
 2. Open `index.html` in your web browser
@@ -89,7 +89,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Author
 
 **Ahmed Salah**  
-GitHub: [AhmedCodespace](https://github.com/AhmedCodespace)
+GitHub: [4hmedsalah](https://github.com/4hmedsalah)
 
 ## Acknowledgments
 
